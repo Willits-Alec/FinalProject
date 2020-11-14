@@ -17,3 +17,7 @@
 .topbar a:hover {
     background-color: rgb(212, 100, 100);
 }
+
+a {
+    padding: 30px;
+}
