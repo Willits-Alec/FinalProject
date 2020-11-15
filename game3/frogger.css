@@ -20,5 +20,6 @@
 
 canvas {
     border: solid;
+    margin-left: 30%;
     /* background-color: blue; */
 }
