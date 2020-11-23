@@ -16,7 +16,7 @@ class Character {
         this.startX = x;
         this.startY = y;
         this.image = image;
-        this.x = x
+        this.x = x;
         this.y = y;
         this.lives = lives;
         this.width = width;
