@@ -33,7 +33,6 @@ function setUpCanvas() {
     populateCars();
     animate();
     document.getElementsByTagName("body")[0].addEventListener("keydown", function(e) {
-        console.log("key is " + e.key);
         if (e.key === "ArrowUp" || e.key === "w") {
             e.preventDefault();
             characterImage.src = "Pictures/frogger/frogger_forward.png";
@@ -75,10 +74,13 @@ function updateScore(c) {
 }
 
 function animateBackground() {
+    let grass = new Image();
+    grass.src = "Pictures/background/grass.jpg";
+    ctx.drawImage(grass, 0, 0, 800, 800);
+
     for (let i = 0; i < backgroundList.length; i++) {
 
         let element = backgroundList[i];
-        console.log(backgroundList.length);
         ctx.drawImage(element.image, element.x, element.y, element.width, element.height);
 
     }
@@ -87,8 +89,9 @@ function animateBackground() {
 function animateCars() {
     for (let i = 0; i < carList.length; i++) {
         let element = carList[i];
-        ctx.drawImage(element.image, element.x, element.y, element.width, element.height);
-
+        let e = new Image();
+        e.src = element.src;
+        ctx.drawImage(e, element.x, element.y, element.width, element.height);
 
         element.x += element.speed;
         if (element.x > 2000) {
@@ -98,7 +101,6 @@ function animateCars() {
 }
 
 function animate() {
-    // console.log(character.y);
 
     document.getElementById("score").innerText = "Score: " + score;
     document.getElementById("lives").innerText = "Lives: " + character.lives;
@@ -157,53 +159,47 @@ function boundaries() {
         character.x = 0;
     }
 }
-var allY = [];
+var roadY = [];
 
 function addBackground() {
     let image = new Image();
 
     image.src = "Pictures/background/road.png";
+    for (let index = 0; index < Math.floor(Math.random() * 10) + 3; index++) {
+        let s = new Background(image, -10, Math.floor(Math.random() * 15) * 50, "Road", 820, 50);
+        backgroundList.push(s);
+    }
 
-    let s = new Background(image, 0, Math.floor(Math.random() * 15) * 50, "Road", 800, 50);
-    backgroundList.push(s);
-
-    s = new Background(image, 0, Math.floor(Math.random() * 15) * 50, "Road", 800, 50);
-    backgroundList.push(s);
-
-    s = new Background(image, 0, Math.floor(Math.random() * 15) * 50, "Road", 800, 50);
-    backgroundList.push(s);
-
-    s = new Background(image, 0, Math.floor(Math.random() * 15) * 50, "Road", 800, 50);
-    backgroundList.push(s);
     for (let index = 0; index < backgroundList.length; index++) {
         const element = backgroundList[index];
-        allY.push(element.y);
+        roadY.push(element.y);
     }
-    let badIndex = checkIfArrayIsUnique(allY);
-    console.log("badINdex is : " + badIndex);
+    let badIndex = checkIfArrayIsUnique(roadY);
 
     while (badIndex != -1) {
         backgroundList[badIndex].y = Math.floor(Math.random() * 15) * 50;
-        allY[badIndex] = backgroundList[badIndex].y;
-        badIndex = checkIfArrayIsUnique(allY);
+        roadY[badIndex] = backgroundList[badIndex].y;
+        badIndex = checkIfArrayIsUnique(roadY);
     }
-    console.log("badINdex is : " + badIndex);
 
 }
 
 
 
 function populateCars() {
-    let image = new Image();
-    image.src = "Pictures/cars/car2.png";
-    let car = new Car(image, 0, 0, false, 5, 50, 50);
-    carList.push(car);
-    car = new Car(image, 0, 90, false, 3, 200, 50);
-    carList.push(car);
-    car = new Car(image, 0, 400, false, 1, 50, 50);
-    carList.push(car);
-    car = new Car(image, 0, 240, false, 12, 25, 25);
-    carList.push(car);
+    carList = [];
+    let som = new Image();
+
+    let numCars = Math.floor(Math.random() * 15) + 3;
+    for (let index = 0; index < numCars; index++) {
+        som.src = "";
+        let carSrc = Math.floor(Math.random() * 10) + 1;
+        som.src = "Pictures/cars/" + carSrc + ".png";
+
+        const randomElement = roadY[Math.floor(Math.random() * roadY.length)];
+        carList.push(new Car("Pictures/cars/" + carSrc + ".png", 0, randomElement, false, Math.floor(Math.random() * 7) + 3, 50, 50));
+    }
+
 }
 
 

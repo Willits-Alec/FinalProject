@@ -15,8 +15,8 @@
 
 //var cars;
 class Car {
-    constructor(image, x, y, isLeft, speed, width, height) {
-        this.image = image;
+    constructor(src, x, y, isLeft, speed, width, height) {
+        this.src = src;
         this.x = x
         this.y = y;
         this.isLeft = isLeft;
