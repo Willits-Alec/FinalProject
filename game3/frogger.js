@@ -20,57 +20,59 @@ var character;
 var score;
 var levelScore;
 var currentLevel;
+var characterImage = new Image();
 
 function setUpCanvas() {
     canvas = document.getElementById("canvas");
     currentLevel = 1;
     carList = [];
+    backgroundList = [];
+    roadY = [];
     score = 0;
     levelScore = 0;
     ctx = canvas.getContext("2d");
 
-    let characterImage = new Image();
     characterImage.src = "Pictures/frogger/frogger_forward.png";
     character = new Character(characterImage, (canvas.width / 2) - 50, 750, 5, 50, 50);
     addBackground();
     populateCars();
     animate();
-    document.getElementsByTagName("body")[0].addEventListener("keydown", function(e) {
-        if (e.key === "ArrowUp" || e.key === "w") {
-            e.preventDefault();
-            characterImage.src = "Pictures/frogger/frogger_forward.png";
 
-            character.y -= 50;
-
-            updateScore(10);
-
-
-        } else if (e.key === "ArrowDown" || e.key === "s") {
-            e.preventDefault();
-            characterImage.src = "Pictures/frogger/frogger_backward.png";
-
-            character.y += 50;
-
-            updateScore(-10);
-
-
-        } else if (e.key === "ArrowRight" || e.key === "d") {
-            e.preventDefault();
-            characterImage.src = "Pictures/frogger/frogger_right.png";
-
-            character.x += 50;
-
-        } else if (e.key === "ArrowLeft" || e.key === "a") {
-            e.preventDefault();
-            characterImage.src = "Pictures/frogger/frogger_left.png";
-
-            character.x -= 50;
-
-        }
-    });
 
 }
+document.getElementsByTagName("body")[0].addEventListener("keydown", function(e) {
+    if (e.key === "ArrowUp" || e.key === "w") {
+        e.preventDefault();
+        characterImage.src = "Pictures/frogger/frogger_forward.png";
 
+        character.y -= 50;
+
+        updateScore(10);
+
+
+    } else if (e.key === "ArrowDown" || e.key === "s") {
+        e.preventDefault();
+        characterImage.src = "Pictures/frogger/frogger_backward.png";
+
+        character.y += 50;
+
+        updateScore(-10);
+
+
+    } else if (e.key === "ArrowRight" || e.key === "d") {
+        e.preventDefault();
+        characterImage.src = "Pictures/frogger/frogger_right.png";
+
+        character.x += 50;
+
+    } else if (e.key === "ArrowLeft" || e.key === "a") {
+        e.preventDefault();
+        characterImage.src = "Pictures/frogger/frogger_left.png";
+
+        character.x -= 50;
+
+    }
+});
 
 
 document.getElementById("start").addEventListener('click', setUpCanvas);

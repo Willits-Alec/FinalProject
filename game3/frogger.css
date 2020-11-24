@@ -18,8 +18,75 @@
     background-color: rgb(212, 100, 100);
 }
 
+h1 {
+    text-align: center;
+    font-size: 60px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 canvas {
     border: solid;
-    margin-left: 30%;
-    /* background-color: blue; */
+    /* margin-left: 30%; */
+    background-color: rgb(75, 75, 77);
+}
+
+.grid-container {
+    display: grid;
+    grid-gap: 10px;
+    background-color: rgb(79, 92, 102);
+    padding: 10px;
+}
+
+.grid-item {
+    background-color: rgba(52, 138, 85, 0.75);
+    text-align: center;
+    /* padding: 20px; */
+}
+
+#start {
+    background-color: rgb(255, 60, 0);
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    font-size: 30px;
+}
+
+#score {
+    color: rgb(255, 94, 0);
+    font-size: 30px;
+}
+
+#lives {
+    color: rgb(255, 94, 0);
+    font-size: 30px;
+}
+
+.start {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+}
+
+.score {
+    padding: 3px;
+    grid-column: 1 / span 1;
+    grid-row: 2;
+}
+
+.lives {
+    grid-column: 2 / span 1;
+    grid-row: 2;
+}
+
+.game {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+}
+
+.high_scores {
+    grid-column: 1 / span 2;
+    grid-row: 4;
 }

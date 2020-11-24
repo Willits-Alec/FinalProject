@@ -18,22 +18,37 @@
         <a href="../game2/index.html">Chess</a>
         <a href="../game3/index.html">Frogger</a>
     </div>
-    <H1>Frogger</H1> <button id="start">Start</button>
+    <H1>Frogger</H1>
+    <div class="grid-container">
+        <div class="grid-item start">
+            <button id="start"><a href="#lives"> Start</a></button>
+        </div>
+        <div class="grid-item score">
+            <p id="score">Score: </p>
+        </div>
+        <div class="grid-item lives">
 
-    <p id="score">Score: </p>
-    <p id="lives">Lives: </p>
-    <canvas width="800" height="800" id="canvas"></canvas>
-    <ul>
-        <li>scores or something</li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
+            <p id="lives">Lives: </p>
+        </div>
+        <div class="grid-item game">
 
-    </ul>
+            <canvas width="800" height="800" id="canvas"></canvas>
+        </div>
+        <div class="grid-item high_scores">
+
+            <ul id="HighScores">
+                <li>scores or something</li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+
+            </ul>
+        </div>
+    </div>
 </body>
 
 </html>
