@@ -18,17 +18,20 @@ var backgroundList = [];
 var canvas, ctx;
 var character;
 var score;
+var levelScore;
+var currentLevel;
 
 function setUpCanvas() {
     canvas = document.getElementById("canvas");
-
+    currentLevel = 1;
     carList = [];
     score = 0;
+    levelScore = 0;
     ctx = canvas.getContext("2d");
 
     let characterImage = new Image();
     characterImage.src = "Pictures/frogger/frogger_forward.png";
-    character = new Character(characterImage, (canvas.width / 2) - 50, (canvas.height - 50), 5, 50, 50);
+    character = new Character(characterImage, (canvas.width / 2) - 50, 750, 5, 50, 50);
     addBackground();
     populateCars();
     animate();
@@ -36,15 +39,20 @@ function setUpCanvas() {
         if (e.key === "ArrowUp" || e.key === "w") {
             e.preventDefault();
             characterImage.src = "Pictures/frogger/frogger_forward.png";
-            updateScore(10);
+
             character.y -= 50;
+
+            updateScore(10);
+
 
         } else if (e.key === "ArrowDown" || e.key === "s") {
             e.preventDefault();
-            updateScore(-10);
             characterImage.src = "Pictures/frogger/frogger_backward.png";
 
             character.y += 50;
+
+            updateScore(-10);
+
 
         } else if (e.key === "ArrowRight" || e.key === "d") {
             e.preventDefault();
@@ -68,7 +76,8 @@ function setUpCanvas() {
 document.getElementById("start").addEventListener('click', setUpCanvas);
 
 function updateScore(c) {
-    if (character.y < 750 && character.y > 0) {
+    if (character.y <= 750 && character.y >= 0) {
+        levelScore += c;
         score += c;
     }
 }
@@ -113,10 +122,12 @@ function animate() {
     animateCars();
     boundaries();
     if (character.lives == 0) {
-        // score = 0;
         endGame();
-
-
+        return;
+    }
+    if (character.y <= 0) {
+        console.log("change level");
+        changeLevel();
         return;
     }
     requestAnimationFrame(animate) // loop
@@ -124,8 +135,22 @@ function animate() {
 
 }
 
+function changeLevel() {
+    character.y = 750;
+    currentLevel++;
+    console.log(currentLevel);
+    levelScore = 0;
+    carList = [];
+    backgroundList = [];
+    roadY = [];
+    addBackground();
+    populateCars();
+    animate();
+}
+
 function endGame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+    // ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+    // game over screen
     document.getElementById("lives").innerText = "Lives: " + character.lives;
     document.getElementById("score").innerText = "Score: " + score;
 
@@ -135,7 +160,7 @@ function checkForCollisions() {
     for (let index = 0; index < carList.length; index++) {
         let element = carList[index];
         if (element.intersects(character)) {
-            score = 0;
+            score -= levelScore;
             character.collision();
         }
 
@@ -166,14 +191,20 @@ function addBackground() {
 
     image.src = "Pictures/background/road.png";
     for (let index = 0; index < Math.floor(Math.random() * 10) + 3; index++) {
-        let s = new Background(image, -10, Math.floor(Math.random() * 15) * 50, "Road", 820, 50);
+        let y = Math.floor((Math.random() * 14) + 1) * 50;
+        console.log("y is " + y);
+        let s = new Background(image, -10, y, "Road", 820, 50);
+        roadY.push(y);
         backgroundList.push(s);
     }
+    let chum = new Image();
+    chum.src = "Pictures/background/sidewalk.png";
+    let s = new Background(chum, -10, 0, "Sidewalk", 820, 40);
+    backgroundList.push(s);
+    s = new Background(chum, -10, 760, "Sidewalk", 820, 40);
+    backgroundList.push(s);
 
-    for (let index = 0; index < backgroundList.length; index++) {
-        const element = backgroundList[index];
-        roadY.push(element.y);
-    }
+
     let badIndex = checkIfArrayIsUnique(roadY);
 
     while (badIndex != -1) {
@@ -194,10 +225,11 @@ function populateCars() {
     for (let index = 0; index < numCars; index++) {
         som.src = "";
         let carSrc = Math.floor(Math.random() * 10) + 1;
-        som.src = "Pictures/cars/" + carSrc + ".png";
 
         const randomElement = roadY[Math.floor(Math.random() * roadY.length)];
-        carList.push(new Car("Pictures/cars/" + carSrc + ".png", 0, randomElement, false, Math.floor(Math.random() * 7) + 3, 50, 50));
+        let speed = Math.floor(Math.random() * 7) + 3;
+        console.log("speed" + speed);
+        carList.push(new Car("Pictures/cars/" + carSrc + "_left.png", Math.floor(Math.random() * 15) * 50, randomElement, false, speed, 100, 50));
     }
 
 }

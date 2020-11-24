@@ -28,8 +28,8 @@ class Car {
     intersects(character) {
         return !(character.x > (this.x + this.width) ||
             (character.x + character.width) < this.x ||
-            character.y > (this.y + this.height) ||
-            (character.y + character.height) < this.y);
+            character.y + 1 > (this.y + this.height) ||
+            (character.y + character.height - 1) < this.y);
     }
 }
 
