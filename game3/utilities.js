@@ -9,6 +9,7 @@ export function qs(selector) {
 
 export function getFromLS(key) {
     var a = localStorage.getItem(key);
+    console.log("not parsed: " + a);
     var parsed;
     try {
         parsed = JSON.parse(a); // this is how you parse a string into JSON 

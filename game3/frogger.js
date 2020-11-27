@@ -23,12 +23,21 @@ var levelScore;
 var currentLevel;
 var characterImage = new Image();
 var gameGoing = false;
+var highScores = [];
+
+
 canvas = document.getElementById("canvas");
 
 
 
 ctx = canvas.getContext("2d");
-
+highScores = loadScore("scores");
+if (highScores == null) {
+    highScores = [];
+}
+highScores.sort((a, b) => b - a); // For ascending sort
+displayScores();
+console.log(highScores);
 let x = new Image();
 x.src = "Pictures/start.png";
 if (x.complete) {
@@ -172,7 +181,6 @@ function changeLevel() {
 
 function endGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
-    gameGoing = false;
     let ch = new Image();
     ch.src = "Pictures/game_over.png";
     console.log(ch);
@@ -186,19 +194,39 @@ function endGame() {
             ctx.drawImage(ch, rect.x, rect.y, rect.width, rect.height);
         };
     }
+    if (highScores == null) {
+        highScores = [];
+    }
+    highScores.push(score);
+    console.log(highScores);
+    saveScore("scores");
+    displayScores();
+    gameGoing = false;
 
+}
 
+function displayScores() {
+    let ulScores = document.getElementById("HighScores");
+    for (let index = 0; index < highScores.length; index++) {
+        const element = highScores[index];
+        let liScore = document.createElement("li");
+        liScore.innerHTML = element;
+        ulScores.appendChild(liScore);
+
+    }
 }
 
 function checkForCollisions() {
     for (let index = 0; index < carList.length; index++) {
         let element = carList[index];
         if (element.intersects(character)) {
+            if (character.lives > 1) {
+                score -= levelScore;
+                levelScore = 0;
 
-            score -= levelScore;
-            levelScore = 0;
-
+            }
             character.collision();
+
         }
 
 
@@ -292,7 +320,7 @@ function checkIfArrayIsUnique(myArray) {
 //save to local storage
 function saveScore(key) {
     console.log("saving");
-    saveToLS(key, todos);
+    saveToLS(key, highScores);
 }
 
 function loadScore(key) {
