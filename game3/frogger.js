@@ -11,6 +11,7 @@ add hitbox
 import Car from "./cars.js";
 import Character from "./character.js";
 import Background from "./background.js";
+import { qs, saveToLS, getFromLS } from './utilities.js';
 
 var carList = [];
 var backgroundList = [];
@@ -21,24 +22,40 @@ var score;
 var levelScore;
 var currentLevel;
 var characterImage = new Image();
+var gameGoing = false;
+canvas = document.getElementById("canvas");
 
-function setUpCanvas() {
-    canvas = document.getElementById("canvas");
+
+
+ctx = canvas.getContext("2d");
+
+let x = new Image();
+x.src = "Pictures/start.png";
+if (x.complete) {
+    ctx.drawImage(x, rect.x, rect.y, rect.width, rect.height);
+} else {
+    x.onload = function() {
+        ctx.drawImage(x, rect.x, rect.y, rect.width, rect.height);
+    };
+}
+console.log(x);
+// ctx.drawImage(x, rect.x, rect.y, rect.width, rect.height);
+
+function startGame() {
+    window.scrollTo(0, 300);
+    gameGoing = true;
     currentLevel = 1;
     carList = [];
     backgroundList = [];
     roadY = [];
     score = 0;
     levelScore = 0;
-    ctx = canvas.getContext("2d");
 
     characterImage.src = "Pictures/frogger/frogger_forward.png";
     character = new Character(characterImage, (canvas.width / 2) - 50, 750, 5, 50, 50);
     addBackground();
     populateCars();
     animate();
-
-
 }
 document.getElementsByTagName("body")[0].addEventListener("keydown", function(e) {
     if (e.key === "ArrowUp" || e.key === "w") {
@@ -75,13 +92,16 @@ document.getElementsByTagName("body")[0].addEventListener("keydown", function(e)
 });
 
 
-document.getElementById("start").addEventListener('click', setUpCanvas);
 
 function updateScore(c) {
     if (character.y <= 750 && character.y >= 0) {
         levelScore += c;
         score += c;
     }
+    console.log("score is " + score);
+    console.log("level score is " + levelScore);
+
+
 }
 
 function animateBackground() {
@@ -151,10 +171,22 @@ function changeLevel() {
 }
 
 function endGame() {
-    // ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+    gameGoing = false;
+    let ch = new Image();
+    ch.src = "Pictures/game_over.png";
+    console.log(ch);
     // game over screen
     document.getElementById("lives").innerText = "Lives: " + character.lives;
     document.getElementById("score").innerText = "Score: " + score;
+    if (ch.complete) {
+        ctx.drawImage(ch, rect.x, rect.y, rect.width, rect.height);
+    } else {
+        ch.onload = function() {
+            ctx.drawImage(ch, rect.x, rect.y, rect.width, rect.height);
+        };
+    }
+
 
 }
 
@@ -162,7 +194,10 @@ function checkForCollisions() {
     for (let index = 0; index < carList.length; index++) {
         let element = carList[index];
         if (element.intersects(character)) {
+
             score -= levelScore;
+            levelScore = 0;
+
             character.collision();
         }
 
@@ -192,7 +227,7 @@ function addBackground() {
     let image = new Image();
 
     image.src = "Pictures/background/road.png";
-    for (let index = 0; index < Math.floor(Math.random() * 10) + 3; index++) {
+    for (let index = 0; index < Math.floor(Math.random() * 10) + 7; index++) {
         let y = Math.floor((Math.random() * 14) + 1) * 50;
         console.log("y is " + y);
         let s = new Background(image, -10, y, "Road", 820, 50);
@@ -210,7 +245,7 @@ function addBackground() {
     let badIndex = checkIfArrayIsUnique(roadY);
 
     while (badIndex != -1) {
-        backgroundList[badIndex].y = Math.floor(Math.random() * 15) * 50;
+        backgroundList[badIndex].y = Math.floor((Math.random() * 14) + 1) * 50;
         roadY[badIndex] = backgroundList[badIndex].y;
         badIndex = checkIfArrayIsUnique(roadY);
     }
@@ -223,7 +258,7 @@ function populateCars() {
     carList = [];
     let som = new Image();
 
-    let numCars = Math.floor(Math.random() * 15) + 3;
+    let numCars = Math.floor(Math.random() * 15) + 13;
     for (let index = 0; index < numCars; index++) {
         som.src = "";
         let carSrc = Math.floor(Math.random() * 10) + 1;
@@ -250,31 +285,53 @@ function checkIfArrayIsUnique(myArray) {
     return -1; // means there are no duplicate values.
 }
 
-// function getMousePos(canvas, event) {
-//     var rect = canvas.getBoundingClientRect();
-//     return {
-//         x: event.clientX - rect.left,
-//         y: event.clientY - rect.top
-//     };
-// }
-// //Function to check whether a point is inside a rectangle
-// function isInside(pos, rect) {
-//     return pos.x > rect.x && pos.x < rect.x + rect.width && pos.y < rect.y + rect.height && pos.y > rect.y;
-// }
 
 
-// //The rectangle should have x,y,width,height properties
-// var rect = {
-//     x: 250,
-//     y: 350,
-//     width: 200,
-//     height: 100
-// };
-// //Binding the click event on the canvas
-// canvas.addEventListener('click', function(evt) {
-//     var mousePos = getMousePos(canvas, evt);
-//     console.log(mousePos);
-//     if (isInside(mousePos, rect)) {
-//         setUpCanvas();
-//     }
-// }, false);
+
+
+//save to local storage
+function saveScore(key) {
+    console.log("saving");
+    saveToLS(key, todos);
+}
+
+function loadScore(key) {
+    console.log("loading");
+    return getFromLS(key);
+}
+
+function getMousePos(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+    };
+}
+//Function to check whether a point is inside a rectangle
+function isInside(pos, rect) {
+    return pos.x > rect.x && pos.x < rect.x + rect.width && pos.y < rect.y + rect.height && pos.y > rect.y;
+}
+
+
+canvas.addEventListener('click', function(evt) {
+
+
+    var mousePos = getMousePos(canvas, evt);
+    console.log(mousePos);
+    if (isInside(mousePos, rect)) {
+        if (gameGoing == false) {
+            startGame();
+        }
+    }
+}, false);
+
+//The rectangle should have x,y,width,height properties
+var rect = {
+    x: 200,
+    y: 250,
+    width: 400,
+    height: 200
+};
+
+
+//Binding the click event on the canvas
