@@ -27,6 +27,11 @@ html {
     scroll-behavior: smooth;
 }
 
+ul {
+    font-size: 30px;
+    list-style: none;
+}
+
 canvas {
     border: solid;
     /* margin-left: 30%; */

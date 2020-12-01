@@ -134,7 +134,7 @@ function animateCars() {
         ctx.drawImage(e, element.x, element.y, element.width, element.height);
 
         element.x += element.speed;
-        if (element.x > 2000) {
+        if (element.x > 1000) {
             element.x = -100;
         }
     }
@@ -151,6 +151,7 @@ function animate() {
     ctx.drawImage(character.image, character.x, character.y, character.width, character.height);
     checkForCollisions();
     animateCars();
+    checkForBumping();
     boundaries();
     if (character.lives == 0) {
         endGame();
@@ -207,12 +208,25 @@ function endGame() {
 
 function displayScores() {
     let ulScores = document.getElementById("HighScores");
+    ulScores.innerHTML = "High Scores: ";
     for (let index = 0; index < highScores.length; index++) {
         const element = highScores[index];
         let liScore = document.createElement("li");
         liScore.innerHTML = element;
         ulScores.appendChild(liScore);
 
+    }
+}
+
+function checkForBumping() {
+    console.log("checking for bumping");
+    for (let i = 0; i < carList.length; i++) {
+        for (let j = 0; j < carList.length; j++) {
+            if (carList[i].intersects(carList[j]) && i != j) {
+                console.log("intersect!");
+                carList[i].bumpCar(carList[j]);
+            }
+        }
     }
 }
 
