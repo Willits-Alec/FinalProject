@@ -12,9 +12,37 @@
 // make statement for single jump or an alert to make a jump when possable
 // 
 
+window.onload = function () {
+        var c = document.getElementById("checkersBoard");
+        var context = c.getContext("2d");
+
+        let board = new Image();
+        let red = new Image();
+        red.src = "Pictures/red.png";
+        board.src = "Pictures/board.png";
+
+    if(board.complete) {
+        context.drawImage(board, 0, 0, 800, 800);
+    }
+    else{
+        board.onload = function(){
+            context.drawImage(board, 0, 0, 800, 800);
+        }
+        
+    }
+
+    if(red.complete) {
+        context.drawImage(red, 0, 0, 100, 100);
+    }
+    else{
+        red.onload = function(){
+            context.drawImage(red, 0, 0, 100, 100);
+        }
+        
+    }
 
 
-window.onload = function() {
+   // context.drawImage(red, 0, 0, 200, 200)
     //The initial setup
     //1's are player 1
     //2's are player 2
@@ -216,7 +244,7 @@ window.onload = function() {
         playerTurn: 1,
         jumpexist: false,
         continuousjump: false,
-        tilesElement: $('div.tiles'),
+       // tilesElement: $('div.tiles'),
 
 
 

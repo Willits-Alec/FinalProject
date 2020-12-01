@@ -37,7 +37,7 @@ if (highScores == null) {
 }
 highScores.sort((a, b) => b - a); // For ascending sort
 displayScores();
-console.log(highScores);
+//console.log(highScores);
 let x = new Image();
 x.src = "Pictures/start.png";
 if (x.complete) {
@@ -47,7 +47,7 @@ if (x.complete) {
         ctx.drawImage(x, rect.x, rect.y, rect.width, rect.height);
     };
 }
-console.log(x);
+//console.log(x);
 // ctx.drawImage(x, rect.x, rect.y, rect.width, rect.height);
 
 function startGame() {
@@ -107,8 +107,8 @@ function updateScore(c) {
         levelScore += c;
         score += c;
     }
-    console.log("score is " + score);
-    console.log("level score is " + levelScore);
+    //console.log("score is " + score);
+    //console.log("level score is " + levelScore);
 
 
 }
@@ -158,7 +158,7 @@ function animate() {
         return;
     }
     if (character.y <= 0) {
-        console.log("change level");
+        //  console.log("change level");
         changeLevel();
         return;
     }
@@ -170,7 +170,7 @@ function animate() {
 function changeLevel() {
     character.y = 750;
     currentLevel++;
-    console.log(currentLevel);
+    // console.log(currentLevel);
     levelScore = 0;
     carList = [];
     backgroundList = [];
@@ -184,7 +184,7 @@ function endGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
     let ch = new Image();
     ch.src = "Pictures/game_over.png";
-    console.log(ch);
+    // console.log(ch);
     // game over screen
     document.getElementById("lives").innerText = "Lives: " + character.lives;
     document.getElementById("score").innerText = "Score: " + score;
@@ -199,7 +199,7 @@ function endGame() {
         highScores = [];
     }
     highScores.push(score);
-    console.log(highScores);
+    //console.log(highScores);
     saveScore("scores");
     displayScores();
     gameGoing = false;
@@ -219,11 +219,11 @@ function displayScores() {
 }
 
 function checkForBumping() {
-    console.log("checking for bumping");
+    //console.log("checking for bumping");
     for (let i = 0; i < carList.length; i++) {
         for (let j = 0; j < carList.length; j++) {
             if (carList[i].intersects(carList[j]) && i != j) {
-                console.log("intersect!");
+                // console.log("intersect!");
                 carList[i].bumpCar(carList[j]);
             }
         }
@@ -271,7 +271,7 @@ function addBackground() {
     image.src = "Pictures/background/road.png";
     for (let index = 0; index < Math.floor(Math.random() * 10) + 7; index++) {
         let y = Math.floor((Math.random() * 14) + 1) * 50;
-        console.log("y is " + y);
+        //  console.log("y is " + y);
         let s = new Background(image, -10, y, "Road", 820, 50);
         roadY.push(y);
         backgroundList.push(s);
@@ -307,7 +307,7 @@ function populateCars() {
 
         const randomElement = roadY[Math.floor(Math.random() * roadY.length)];
         let speed = Math.floor(Math.random() * 7) + 3;
-        console.log("speed" + speed);
+        //   console.log("speed" + speed);
         carList.push(new Car("Pictures/cars/" + carSrc + "_left.png", Math.floor(Math.random() * 15) * 50, randomElement, false, speed, 100, 50));
     }
 
@@ -333,12 +333,12 @@ function checkIfArrayIsUnique(myArray) {
 
 //save to local storage
 function saveScore(key) {
-    console.log("saving");
+    // console.log("saving");
     saveToLS(key, highScores);
 }
 
 function loadScore(key) {
-    console.log("loading");
+    // console.log("loading");
     return getFromLS(key);
 }
 
@@ -359,7 +359,7 @@ canvas.addEventListener('click', function(evt) {
 
 
     var mousePos = getMousePos(canvas, evt);
-    console.log(mousePos);
+    // console.log(mousePos);
     if (isInside(mousePos, rect)) {
         if (gameGoing == false) {
             startGame();
