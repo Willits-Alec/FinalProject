@@ -12,37 +12,47 @@
 // make statement for single jump or an alert to make a jump when possable
 // 
 
-window.onload = function () {
-        var c = document.getElementById("checkersBoard");
-        var context = c.getContext("2d");
+window.onload = function() {
 
-        let board = new Image();
-        let red = new Image();
-        red.src = "Pictures/red.png";
-        board.src = "Pictures/board.png";
+    var c = document.getElementById("checkersBoard");
+    var context = c.getContext("2d");
 
-    if(board.complete) {
-        context.drawImage(board, 0, 0, 800, 800);
-    }
-    else{
-        board.onload = function(){
-            context.drawImage(board, 0, 0, 800, 800);
+    let red = new Image();
+    red.src = "Pictures/red.png";
+
+
+    context.fillRect(0, 0, 800, 800);
+
+    for (let i = 0; i < 800; i += 200) {
+        for (let j = 0; j < 800; j += 200) {
+
+            context.fillStyle = 'rgb(255, 0, 0)';
+            context.fillRect(i, j, 100, 100);
         }
-        
+    }
+    for (let i = 100; i < 800; i += 200) {
+        for (let j = 100; j < 800; j += 200) {
+
+            context.fillRect(i, j, 100, 100);
+        }
     }
 
-    if(red.complete) {
+
+
+    if (red.complete) {
         context.drawImage(red, 0, 0, 100, 100);
-    }
-    else{
-        red.onload = function(){
-            context.drawImage(red, 0, 0, 100, 100);
+    } else {
+        red.onload = function() {
+            context.drawImage(red, 0, 100, 100, 100);
+            context.drawImage(red, 100, 0, 100, 100);
+
         }
-        
+        context.drawImage(red, 100, 100, 100, 100);
+        context.drawImage(red, 0, 0, 100, 100);
+
     }
 
-
-   // context.drawImage(red, 0, 0, 200, 200)
+    //context.drawImage(red, 0, 0, 200, 200)
     //The initial setup
     //1's are player 1
     //2's are player 2
@@ -244,7 +254,7 @@ window.onload = function () {
         playerTurn: 1,
         jumpexist: false,
         continuousjump: false,
-       // tilesElement: $('div.tiles'),
+        // tilesElement: $('div.tiles'),
 
 
 
