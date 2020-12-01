@@ -145,7 +145,7 @@ function animate() {
     document.getElementById("score").innerText = "Score: " + score;
     document.getElementById("lives").innerText = "Lives: " + character.lives;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+    // ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
     animateBackground();
 
     ctx.drawImage(character.image, character.x, character.y, character.width, character.height);
