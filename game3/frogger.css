@@ -23,11 +23,52 @@ html {
 }
 
 ul {
-    font-size: 30px;
-    list-style: none;
+    width: 450px;
+    font-size: 40px;
+    /* change it to whatever you like */
+    position: relative;
+    /* these should be probably already set up by `reset.css` */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
-.individual-life {}
+#highScoreLabel {
+    font-size: 40px;
+}
+
+ul:before,
+ul:after {
+    text-align: center;
+    display: block;
+    border: 1px solid black;
+    border-bottom: 0;
+    width: 48%;
+}
+
+ul:before {
+    border-right: 0;
+}
+
+ul:after {
+    position: absolute;
+    top: 0;
+    left: 48%;
+    margin-left: 1px;
+}
+
+li {
+    font-size: 40px;
+    text-align: left;
+    width: 48%;
+    float: left;
+    border: 1px solid black;
+    margin-bottom: -1px;
+}
+
+li:nth-child(even) {
+    margin-left: -1px;
+}
 
 canvas {
     border: solid;

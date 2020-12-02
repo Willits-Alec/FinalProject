@@ -15,11 +15,11 @@
 
 //var cars;
 class Car {
-    constructor(src, x, y, isLeft, speed, width, height) {
+    constructor(src, x, y, direction, speed, width, height) {
         this.src = src;
         this.x = x
         this.y = y;
-        this.isLeft = isLeft;
+        this.direction = direction;
         this.speed = speed;
         this.width = width;
         this.height = height;
