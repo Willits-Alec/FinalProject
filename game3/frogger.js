@@ -35,7 +35,6 @@ highScores = loadScore("scores");
 if (highScores == null) {
     highScores = [];
 }
-highScores.sort((a, b) => b - a); // For ascending sort
 displayScores();
 //console.log(highScores);
 let x = new Image();
@@ -51,7 +50,7 @@ if (x.complete) {
 // ctx.drawImage(x, rect.x, rect.y, rect.width, rect.height);
 
 function startGame() {
-    window.scrollTo(0, 300);
+    window.scrollTo(0, 200);
     gameGoing = true;
     currentLevel = 1;
     carList = [];
@@ -101,6 +100,25 @@ document.getElementsByTagName("body")[0].addEventListener("keydown", function(e)
 });
 
 
+function displayLives() {
+    let life = new Image();
+    life.src = "Pictures/frogger/frogger_forward.png";
+    life.height = "50";
+    life.width = "50";
+    let display = document.getElementById("lives");
+    display.innerHTML = "Lives: ";
+    console.log(display);
+    console.log("lives: " + character.lives);
+    for (let index = 0; index < character.lives; index++) {
+        let thing = life.cloneNode(true);
+        console.log(index);
+        display.appendChild(thing);
+        //display.innerText += life;
+
+    }
+    console.log(display);
+
+}
 
 function updateScore(c) {
     if (character.y <= 750 && character.y >= 0) {
@@ -149,6 +167,7 @@ function animate() {
     animateBackground();
 
     ctx.drawImage(character.image, character.x, character.y, character.width, character.height);
+    displayLives();
     checkForCollisions();
     animateCars();
     checkForBumping();
@@ -198,6 +217,9 @@ function endGame() {
     if (highScores == null) {
         highScores = [];
     }
+    ctx.font = "36px Georgia";
+    ctx.fillStyle = "rgb(255, 94, 0)";
+    ctx.fillText("Score: " + score, 600, 600);
     highScores.push(score);
     //console.log(highScores);
     saveScore("scores");
@@ -207,6 +229,8 @@ function endGame() {
 }
 
 function displayScores() {
+    highScores.sort((a, b) => b - a); // For ascending sort
+
     let ulScores = document.getElementById("HighScores");
     ulScores.innerHTML = "High Scores: ";
     for (let index = 0; index < highScores.length; index++) {
