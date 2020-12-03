@@ -141,3 +141,19 @@ div * {
       0 0 35px #228dff, 0 0 40px #228dff, 0 0 50px #228dff, 0 0 75px #228dff;
   }
 }
+
+#reset {
+    text-align: center;
+    padding: 10px 7px 10px 7px;
+    margin-left: 47%;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 3px;
+    transition: 0.3s;
+}
+
+#reset:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgba(201, 8, 8, 0.966);
+}
