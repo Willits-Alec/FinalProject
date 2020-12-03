@@ -108,16 +108,16 @@ function displayLives() {
     life.width = "50";
     let display = document.getElementById("lives");
     display.innerHTML = "Lives: ";
-    console.log(display);
-    console.log("lives: " + character.lives);
+    //console.log(display);
+    //console.log("lives: " + character.lives);
     for (let index = 0; index < character.lives; index++) {
         let thing = life.cloneNode(true);
-        console.log(index);
+        //  console.log(index);
         display.appendChild(thing);
         //display.innerText += life;
 
     }
-    console.log(display);
+    //console.log(display);
 
 }
 
@@ -251,7 +251,14 @@ function displayScores() {
     for (let index = 0; index < 10; index++) {
         const element = highScores[index];
         let liScore = document.createElement("li");
-        liScore.innerHTML = index + 1 + ": " + element;
+
+        if (element != null) {
+            liScore.innerHTML = index + 1 + ": " + element;
+        } else {
+            liScore.innerHTML = index + 1 + ": 0";
+
+        }
+
         ulScores.appendChild(liScore);
 
     }
@@ -405,7 +412,7 @@ canvas.addEventListener('click', function(evt) {
 
 
     var mousePos = getMousePos(canvas, evt);
-    console.log(mousePos);
+    // console.log(mousePos);
     if (gameGoing == false && starting == true) {
         if (isInside(mousePos, rect)) {
             startGame();
