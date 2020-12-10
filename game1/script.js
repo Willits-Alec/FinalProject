@@ -1,17 +1,3 @@
-// still need to finish:
-
-// initionalize board
-// reset the game
-
-// and events like: 
-
-// select piece if its players turn, 
-// clear button for a game reset id="cleargame"
-// find tile obj being clicked
-// do double and tripple jumps EX: somthing like if its in range "var inRange = tile.inRange(piece) " (and another error check) "if (inRange != 'wrong') "
-// make statement for single jump or an alert to make a jump when possable
-// 
-
 window.onload = function() {
 
     var c = document.getElementById("checkersBoard");
@@ -36,8 +22,6 @@ window.onload = function() {
             context.fillRect(i, j, 100, 100);
         }
     }
-
-
 
     if (red.complete) {
         context.drawImage(red, 0, 0, 100, 100);
