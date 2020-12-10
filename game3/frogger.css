@@ -18,18 +18,56 @@
     background-color: rgb(212, 100, 100);
 }
 
-h1 {
-    text-align: center;
-    font-size: 60px;
-}
-
 html {
     scroll-behavior: smooth;
 }
 
 ul {
-    font-size: 30px;
-    list-style: none;
+    width: 450px;
+    font-size: 40px;
+    /* change it to whatever you like */
+    position: relative;
+    /* these should be probably already set up by `reset.css` */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#highScoreLabel {
+    font-size: 40px;
+}
+
+ul:before,
+ul:after {
+    text-align: center;
+    display: block;
+    border: 1px solid black;
+    border-bottom: 0;
+    width: 48%;
+}
+
+ul:before {
+    border-right: 0;
+}
+
+ul:after {
+    position: absolute;
+    top: 0;
+    left: 48%;
+    margin-left: 1px;
+}
+
+li {
+    font-size: 40px;
+    text-align: left;
+    width: 48%;
+    float: left;
+    border: 1px solid black;
+    margin-bottom: -1px;
+}
+
+li:nth-child(even) {
+    margin-left: -1px;
 }
 
 canvas {
@@ -94,4 +132,21 @@ canvas {
 .high_scores {
     grid-column: 1 / span 2;
     grid-row: 4;
+}
+
+#name {
+    /* position: absolute; */
+    /* top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0; */
+    height: 90px;
+    color: green;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    font-size: 60px;
+    /* line-height: 40px; */
+    letter-spacing: 5px;
+    text-shadow: 4px 0 0 #1d0761;
 }

@@ -24,7 +24,7 @@ var currentLevel;
 var characterImage = new Image();
 var gameGoing = false;
 var highScores = [];
-
+var starting = true;
 
 canvas = document.getElementById("canvas");
 
@@ -35,7 +35,6 @@ highScores = loadScore("scores");
 if (highScores == null) {
     highScores = [];
 }
-highScores.sort((a, b) => b - a); // For ascending sort
 displayScores();
 //console.log(highScores);
 let x = new Image();
@@ -51,7 +50,8 @@ if (x.complete) {
 // ctx.drawImage(x, rect.x, rect.y, rect.width, rect.height);
 
 function startGame() {
-    window.scrollTo(0, 300);
+    starting = false;
+    window.scrollTo(0, 200);
     gameGoing = true;
     currentLevel = 1;
     carList = [];
@@ -101,6 +101,25 @@ document.getElementsByTagName("body")[0].addEventListener("keydown", function(e)
 });
 
 
+function displayLives() {
+    let life = new Image();
+    life.src = "Pictures/frogger/frogger_forward.png";
+    life.height = "50";
+    life.width = "50";
+    let display = document.getElementById("lives");
+    display.innerHTML = "Lives: ";
+    //console.log(display);
+    //console.log("lives: " + character.lives);
+    for (let index = 0; index < character.lives; index++) {
+        let thing = life.cloneNode(true);
+        //  console.log(index);
+        display.appendChild(thing);
+        //display.innerText += life;
+
+    }
+    //console.log(display);
+
+}
 
 function updateScore(c) {
     if (character.y <= 750 && character.y >= 0) {
@@ -132,10 +151,19 @@ function animateCars() {
         let e = new Image();
         e.src = element.src;
         ctx.drawImage(e, element.x, element.y, element.width, element.height);
+        if (element.direction) {
+            element.x += element.speed;
 
-        element.x += element.speed;
+        } else {
+            element.x -= element.speed;
+
+        }
+
         if (element.x > 1000) {
             element.x = -100;
+        }
+        if (element.x < -400) {
+            element.x = 1000;
         }
     }
 }
@@ -149,6 +177,7 @@ function animate() {
     animateBackground();
 
     ctx.drawImage(character.image, character.x, character.y, character.width, character.height);
+    displayLives();
     checkForCollisions();
     animateCars();
     checkForBumping();
@@ -198,21 +227,38 @@ function endGame() {
     if (highScores == null) {
         highScores = [];
     }
+    ctx.font = "36px Georgia";
+    ctx.fillStyle = "rgb(255, 94, 0)";
+    ctx.fillText("Score: " + score, 340, 500);
     highScores.push(score);
     //console.log(highScores);
     saveScore("scores");
     displayScores();
+    let replay = new Image();
+    replay.src = "Pictures/play_again.png";
+    replay.onload = function() {
+        ctx.drawImage(replay, endRect.x, endRect.y, endRect.width, endRect.height);
+    };
     gameGoing = false;
 
 }
 
 function displayScores() {
+    highScores.sort((a, b) => b - a); // For ascending sort
+
     let ulScores = document.getElementById("HighScores");
-    ulScores.innerHTML = "High Scores: ";
-    for (let index = 0; index < highScores.length; index++) {
+    ulScores.innerHTML = "";
+    for (let index = 0; index < 10; index++) {
         const element = highScores[index];
         let liScore = document.createElement("li");
-        liScore.innerHTML = element;
+
+        if (element != null) {
+            liScore.innerHTML = index + 1 + ": " + element;
+        } else {
+            liScore.innerHTML = index + 1 + ": 0";
+
+        }
+
         ulScores.appendChild(liScore);
 
     }
@@ -272,7 +318,7 @@ function addBackground() {
     for (let index = 0; index < Math.floor(Math.random() * 10) + 7; index++) {
         let y = Math.floor((Math.random() * 14) + 1) * 50;
         //  console.log("y is " + y);
-        let s = new Background(image, -10, y, "Road", 820, 50);
+        let s = new Background(image, -10, y, "Road", 820, 50, Math.random() < 0.5);
         roadY.push(y);
         backgroundList.push(s);
     }
@@ -300,15 +346,22 @@ function populateCars() {
     carList = [];
     let som = new Image();
 
-    let numCars = Math.floor(Math.random() * 15) + 13;
+    let numCars = Math.floor(Math.random() * 15) + 5 + (currentLevel * 3);
     for (let index = 0; index < numCars; index++) {
         som.src = "";
         let carSrc = Math.floor(Math.random() * 10) + 1;
-
-        const randomElement = roadY[Math.floor(Math.random() * roadY.length)];
-        let speed = Math.floor(Math.random() * 7) + 3;
+        const randomRoadYIndex = Math.floor(Math.random() * roadY.length);
+        const randomElement = roadY[randomRoadYIndex];
+        let speed = Math.floor(Math.random() * 7) + 3 + currentLevel;
         //   console.log("speed" + speed);
-        carList.push(new Car("Pictures/cars/" + carSrc + "_left.png", Math.floor(Math.random() * 15) * 50, randomElement, false, speed, 100, 50));
+        let direction = backgroundList[randomRoadYIndex].direction;
+        if (direction == true) {
+            carList.push(new Car("Pictures/cars/" + carSrc + "_left.png", Math.floor(Math.random() * 15) * 50, randomElement, direction, speed, 100, 50));
+
+        } else {
+            carList.push(new Car("Pictures/cars/" + carSrc + "_right.png", Math.floor(Math.random() * 15) * 50, randomElement, direction, speed, 100, 50));
+
+        }
     }
 
 }
@@ -360,11 +413,18 @@ canvas.addEventListener('click', function(evt) {
 
     var mousePos = getMousePos(canvas, evt);
     // console.log(mousePos);
-    if (isInside(mousePos, rect)) {
-        if (gameGoing == false) {
+    if (gameGoing == false && starting == true) {
+        if (isInside(mousePos, rect)) {
             startGame();
+
+        }
+    } else if (gameGoing == false && starting == false) {
+        if (isInside(mousePos, endRect)) {
+            startGame();
+
         }
     }
+
 }, false);
 
 //The rectangle should have x,y,width,height properties
@@ -375,5 +435,10 @@ var rect = {
     height: 200
 };
 
-
+var endRect = {
+    x: 350,
+    y: 550,
+    width: 100,
+    height: 100
+};
 //Binding the click event on the canvas
