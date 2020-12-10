@@ -339,7 +339,86 @@ window.onload = function() {
         },
 
         //reset game
-        // clear,
+        clear: function () {
+            location.reload();
+    },
+    check_if_jump_exist: function () {
+        this.jumpexist = false
+        this.continuousjump = false;
+        for (let k of pieces) {
+          k.allowedtomove = false;
+        // if jump exist, only set those "jump" pieces "allowed to move"
+          if (k.position.length != 0 && k.player == this.playerTurn && k.canJumpAny()) {
+            this.jumpexist = true
+            k.allowedtomove = true;
+          }
+        }
+        // if jump doesn't exist, all pieces are allowed to move
+      if (!this.jumpexist) {
+        for (let k of pieces) k.allowedtomove = true;
+      }
+    },
 
-    };
+    $('.piece').on("click", function () {
+        var selected;
+        var isPlayersTurn = ($(this).parent().attr("class").split(' ')[0] == "player" + Board.playerTurn + "pieces");
+        if (isPlayersTurn) {
+          if (!Board.continuousjump && pieces[$(this).attr("id")].allowedtomove) {
+            if ($(this).hasClass('selected')) selected = true;
+            $('.piece').each(function (index) {
+              $('.piece').eq(index).removeClass('selected')
+            });
+            if (!selected) {
+              $(this).addClass('selected');
+            }
+          } else {
+            let exist = "jump exist for other pieces, that piece is not allowed to move"
+            let continuous = "continuous jump exist, you have to jump the same piece"
+            let message = !Board.continuousjump ? exist : continuous
+            console.log(message)
+          }
+        }
+      });
+
+        //reset game when clear button is pressed
+  $('#cleargame').on("click", function () {
+    Board.clear();
+  });
+  $('.tile').on("click", function () {
+    //make sure a piece is selected
+    if ($('.selected').length != 0) {
+      //find the tile object being clicked
+      var tileID = $(this).attr("id").replace(/tile/, '');
+      var tile = tiles[tileID];
+      //find the piece being selected
+      var piece = pieces[$('.selected').attr("id")];
+      //check tile is in range from the object
+      var inRange = tile.inRange(piece);
+      if (inRange != 'wrong') {
+        //check if another move can be made (double and triple jumps)
+        if (inRange == 'jump') {
+          if (piece.opponentJump(tile)) {
+            piece.move(tile);
+            if (piece.canJumpAny()) {
+              //change back to original since another turn can be made
+              piece.element.addClass('selected');
+              // exist continuous jump, you are not allowed to de-select this piece or select other pieces
+              Board.continuousjump = true;
+            } else {
+              Board.changePlayerTurn()
+            }
+          }
+          //if it's regular then move it if no jumping is available
+        } else if (inRange == 'regular' && !Board.jumpexist) {
+          if (!piece.canJumpAny()) {
+            piece.move(tile);
+            Board.changePlayerTurn()
+          } else {
+            alert("You must jump when possible!");
+          }
+        }
+      }
+    }
+  });
+}
 }
