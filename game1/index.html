@@ -7,30 +7,17 @@
     <link rel="stylesheet" href="/main.css">
     <script src="/game1/script.js"></script>
     <title>RIP Flash Games | Checkers </title>
-    <style>
-        .topbar {
-            overflow: hidden;
-            background-color: rgb(212, 39, 30);
-        }
-        
-        .topbar a {
-            float: left;
-            font-family: 'Calibri';
-            display: block;
-            color: #ffffff;
-            text-align: center;
-            padding: 14px 17px;
-            font-size: 17px;
-            text-decoration: none;
-        }
-        
-        .topbar a:hover {
-            background-color: rgb(212, 100, 100);
-        }
-    </style>
+
 </head>
 
 <body>
+
+    <header class="logo">
+        <!-- need to resize the img -->
+        <!-- <img src="/game-clipart-5.jpg.png" alt="Website banner"> -->
+        <h1>RIP Flash Games </h1>
+    </header>
+    
     <div class="topbar">
         <a href="../index.html">Home</a>
         <a href="../game1/index.html">Checkers</a>
@@ -52,7 +39,7 @@
     <div class="turn"></div>
     <span id="winner"></span>
 
-    <canvas id="checkersBoard" width="800" height="800" style="border:1px solid #000000"></canvas>
+    <canvas id="checkersBoard" width="800" height="800" style="border:10px solid #D2691E"></canvas>
 
     <button id="cleargame">Rest Game</button>
 
