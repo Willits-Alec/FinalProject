@@ -2,9 +2,11 @@
 
 /* Global styles
  --------------------------------------------------------*/
- * {
+
+* {
     font-family: 'Nunito', sans-serif;
 }
+
 
 /*Header
 ----------------------------------------------------- */
@@ -15,8 +17,10 @@
     border-radius: 10px;
 }
 
+
 /*Nav
 ----------------------------------------------------- */
+
 .topbar {
     overflow: hidden;
     background-color: rgb(212, 39, 30);
@@ -41,14 +45,22 @@ a {
     padding: 30px;
 }
 
+#games {
+    text-align: center;
+}
+
+
 /*body
 ----------------------------------------------------- */
-body {background-color: #173753;}
 
+body {
+    background-color: #173753;
+}
 
 
 /*foot
 ----------------------------------------------------- */
+
 footer {
     color: #ffffff;
 }
